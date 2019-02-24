@@ -41,4 +41,11 @@ public class SimpleDocumentService implements DocumentService {
         Document document = documentRepository.get(id);
         return conversionService.convert(document, DocumentDto.class);
     }
+
+    @Override
+    public void clean() {
+        documentRepository.clean();
+
+        indexService.clean();
+    }
 }

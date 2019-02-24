@@ -7,4 +7,6 @@ public interface DocumentRepository {
     void save(Document document);
 
     Document get(String id);
+
+    void clean();
 }

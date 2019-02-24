@@ -1,14 +1,12 @@
 package com.test.server.index;
 
-import com.google.common.collect.LinkedHashMultimap;
+import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Multimap;
 import com.test.api.beans.SearchResponse;
 import com.test.server.model.Document;
 import org.springframework.stereotype.Component;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.stream.Collectors;
 
@@ -16,7 +14,7 @@ import java.util.stream.Collectors;
 public class SimpleIndexService implements IndexService {
 
     private ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
-    private Multimap<String, String> documentIdsByTerm = LinkedHashMultimap.create();
+    private Multimap<String, String> documentIdsByTerm = LinkedListMultimap.create();
 
     @Override
     public void putToIndex(Document document) {
@@ -40,11 +38,15 @@ public class SimpleIndexService implements IndexService {
     public SearchResponse search(List<String> keywords, int offset, int limit) {
         lock.readLock().lock();
         try {
-            List<String> documentIds = keywords.stream()
+            Set<Collection<String>> documentsBySeparateTerms = keywords.stream()
                 .map(documentIdsByTerm::get)
-                .flatMap(Collection::stream)
-                .distinct()
-                .collect(Collectors.toList());
+                .collect(Collectors.toCollection(LinkedHashSet::new));
+
+            if (0 == documentsBySeparateTerms.size()) return new SearchResponse(0, Collections.emptyList());
+
+            Set<String> intersectedDocumentIds = intersect(documentsBySeparateTerms);
+
+            List<String> documentIds = new ArrayList<>(intersectedDocumentIds);
 
             int count = documentIds.size();
 
@@ -61,5 +63,27 @@ public class SimpleIndexService implements IndexService {
         } finally {
             lock.readLock().unlock();
         }
+    }
+
+    @Override
+    public void clean() {
+        lock.writeLock().lock();
+        try {
+            documentIdsByTerm.clear();
+        } finally {
+            lock.writeLock().unlock();
+        }
+    }
+
+    private <T> Set<T> intersect(Collection<? extends Collection<T>> collections) {
+        Set<T> common = new LinkedHashSet<T>();
+        if (!collections.isEmpty()) {
+            Iterator<? extends Collection<T>> iterator = collections.iterator();
+            common.addAll(iterator.next());
+            while (iterator.hasNext()) {
+                common.retainAll(iterator.next());
+            }
+        }
+        return common;
     }
 }

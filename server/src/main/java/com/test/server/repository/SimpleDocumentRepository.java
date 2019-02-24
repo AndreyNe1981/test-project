@@ -20,4 +20,9 @@ public class SimpleDocumentRepository implements DocumentRepository {
     public Document get(String id) {
         return documentById.get(id);
     }
+
+    @Override
+    public void clean() {
+        documentById.clear();
+    }
 }

@@ -10,4 +10,6 @@ public interface IndexService {
     void putToIndex(Document document);
 
     SearchResponse search(List<String> keywords, int offset, int limit);
+
+    void clean();
 }

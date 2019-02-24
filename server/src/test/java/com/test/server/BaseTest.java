@@ -4,9 +4,11 @@ import com.ning.http.client.AsyncHttpClient;
 import com.ning.http.client.AsyncHttpClientConfig;
 import com.test.api.HttpTestClient;
 import com.test.api.TestClient;
+import com.test.server.service.DocumentService;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
@@ -28,6 +30,9 @@ public abstract class BaseTest {
 
     protected TestClient testClient;
 
+    @Autowired
+    private DocumentService documentService;
+
     @Before
     public void before() {
         final AsyncHttpClientConfig asyncHttpClientConfig = new AsyncHttpClientConfig.Builder()
@@ -37,6 +42,8 @@ public abstract class BaseTest {
             .build();
 
         AsyncHttpClient httpClient = new AsyncHttpClient(asyncHttpClientConfig);
+
+        documentService.clean();
 
         testClient = new HttpTestClient(httpClient, "http://localhost:" + localServerPort);
     }
