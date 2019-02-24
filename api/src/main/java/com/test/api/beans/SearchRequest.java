@@ -6,6 +6,8 @@ public class SearchRequest {
     private int offset;
     private int limit;
 
+    public SearchRequest() {}
+
     public SearchRequest(SearchCriteria searchCriteria, int offset, int limit) {
         this.searchCriteria = searchCriteria;
         this.offset = offset;

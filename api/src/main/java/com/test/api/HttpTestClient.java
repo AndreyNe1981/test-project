@@ -37,7 +37,8 @@ public class HttpTestClient implements TestClient {
     }
 
     public DocumentDto getDocumentById(String id) {
-        final AsyncHttpClient.BoundRequestBuilder requestBuilder = httpClient.prepareGet(endpoint("/document/" + id));
+        final AsyncHttpClient.BoundRequestBuilder requestBuilder = httpClient.prepareGet(endpoint("/document/" + id))
+            .setHeader("Content-Type", "application/json; charset=utf-8");
 
         try {
             Response response = requestBuilder
@@ -55,7 +56,8 @@ public class HttpTestClient implements TestClient {
 
         if (null == document.getId()) throw new IllegalArgumentException("Document id cannot be null, please use UUID for id generation");
 
-        final AsyncHttpClient.BoundRequestBuilder requestBuilder = httpClient.preparePut(endpoint("/document/" + document.getId()));
+        final AsyncHttpClient.BoundRequestBuilder requestBuilder = httpClient.preparePut(endpoint("/document/" + document.getId()))
+            .setHeader("Content-Type", "application/json; charset=utf-8");
 
         try {
             requestBuilder.setBody(objectMapper.writeValueAsBytes(document));
@@ -81,7 +83,8 @@ public class HttpTestClient implements TestClient {
     }
 
     private SearchResponse search(SearchCriteria searchCriteria, int offset, int limit) {
-        final AsyncHttpClient.BoundRequestBuilder requestBuilder = httpClient.preparePost(endpoint("/search"));
+        final AsyncHttpClient.BoundRequestBuilder requestBuilder = httpClient.preparePost(endpoint("/search"))
+            .setHeader("Content-Type", "application/json; charset=utf-8");
 
         try {
             requestBuilder.setBody(objectMapper.writeValueAsBytes(

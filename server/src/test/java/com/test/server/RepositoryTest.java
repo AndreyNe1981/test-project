@@ -14,7 +14,7 @@ public class RepositoryTest extends BaseTest {
         String documentId = UUID.randomUUID().toString();
 
         DocumentDto document = new DocumentDto(
-            UUID.randomUUID().toString(),
+            documentId,
             "some test text"
         );
 

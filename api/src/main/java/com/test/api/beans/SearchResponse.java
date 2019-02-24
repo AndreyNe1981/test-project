@@ -7,6 +7,13 @@ public class SearchResponse {
     private int count;
     private List<String> documentIds;
 
+    public SearchResponse() {}
+
+    public SearchResponse(int count, List<String> documentIds) {
+        this.count = count;
+        this.documentIds = documentIds;
+    }
+
     public int getCount() {
         return count;
     }
