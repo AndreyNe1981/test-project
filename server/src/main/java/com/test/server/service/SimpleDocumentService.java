@@ -39,6 +39,9 @@ public class SimpleDocumentService implements DocumentService {
     @Override
     public DocumentDto get(String id) {
         Document document = documentRepository.get(id);
+
+        if (null == document) return new DocumentDto("", "");
+
         return conversionService.convert(document, DocumentDto.class);
     }
 

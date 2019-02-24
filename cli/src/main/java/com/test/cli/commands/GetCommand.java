@@ -4,14 +4,11 @@ import com.google.common.collect.Sets;
 import com.test.api.beans.DocumentDto;
 import org.apache.commons.cli.CommandLine;
 
-import java.util.Collection;
-
 import static com.test.cli.enums.ParameterName.ID;
 
 public class GetCommand extends BaseCommand {
 
     private final String id;
-    private Collection<?> requiredParameters = Sets.newHashSet(ID.name().toLowerCase());
 
     public GetCommand(CommandLine cmd) {
         super(cmd);
@@ -21,13 +18,17 @@ public class GetCommand extends BaseCommand {
 
     @Override
     protected void validate(CommandLine cmd) {
-        validateParams(cmd, requiredParameters);
+        validateParams(cmd, Sets.newHashSet(ID.name().toLowerCase()));
     }
 
     @Override
-    public void execute() {
+    public void executeInternal() {
         DocumentDto documentDto = getTestAppClient().getDocumentById(id);
 
-        System.out.println("Document text: " + documentDto.getId());
+        if ("".equals(documentDto.getId())) {
+            System.out.println("Document not found");
+        } else {
+            System.out.println("Document text: " + documentDto.getText());
+        }
     }
 }

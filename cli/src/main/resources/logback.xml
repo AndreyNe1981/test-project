@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="5 seconds">
+
+    <property name="DEFAULT_LOG_PATTERN" value="%d{yy-MM-dd HH:mm:ss.SSS} %-5level [%logger{0}] - %m%n" />
+
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{MMM-dd HH:mm:ss.SSS} %-5level [%logger{0}] - %m%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="com.test" level="info"/>
+    <logger name="org" level="error"/>
+
+    <root level="info">
+        <appender-ref ref="console"/>
+    </root>
+</configuration>

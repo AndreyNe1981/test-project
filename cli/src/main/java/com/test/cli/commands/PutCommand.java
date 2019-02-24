@@ -4,7 +4,6 @@ import com.google.common.collect.Sets;
 import com.test.api.beans.DocumentDto;
 import org.apache.commons.cli.CommandLine;
 
-import java.util.Collection;
 import java.util.UUID;
 
 import static com.test.cli.enums.ParameterName.DOCUMENT;
@@ -12,7 +11,6 @@ import static com.test.cli.enums.ParameterName.DOCUMENT;
 public class PutCommand extends BaseCommand {
 
     private final String documentText;
-    private Collection<?> requiredParameters = Sets.newHashSet(DOCUMENT.name().toLowerCase());
 
     public PutCommand(CommandLine cmd) {
         super(cmd);
@@ -22,11 +20,11 @@ public class PutCommand extends BaseCommand {
 
     @Override
     protected void validate(CommandLine cmd) {
-        validateParams(cmd, requiredParameters);
+        validateParams(cmd, Sets.newHashSet(DOCUMENT.name().toLowerCase()));
     }
 
     @Override
-    public void execute() {
+    public void executeInternal() {
         DocumentDto documentDto = new DocumentDto(
             UUID.randomUUID().toString(),
             documentText

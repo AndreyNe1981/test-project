@@ -8,6 +8,7 @@ import com.test.api.TestClient;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -37,8 +38,19 @@ public abstract class BaseCommand implements Command {
         int port = Integer.parseInt(cmd.getOptionValue(PORT.name().toLowerCase()));
 
         testClient = new HttpTestClient(httpClient, "http://" + host + ":" + port);
-
     }
+
+    @Override
+    public void execute() {
+        executeInternal();
+        try {
+            testClient.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    protected abstract void executeInternal();
 
     protected abstract void validate(CommandLine cmd);
 

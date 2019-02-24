@@ -58,10 +58,13 @@ public class ConsoleApp {
 
             final Command command = CommandFactory.getCommand(inputCommand, cmd);
             command.execute();
+
+            System.exit(0);
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println(e.getMessage());
             System.out.println("Executing command was canceled.");
+            System.exit(1);
         }
     }
 

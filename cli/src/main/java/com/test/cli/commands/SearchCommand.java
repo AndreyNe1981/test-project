@@ -4,8 +4,6 @@ import com.google.common.collect.Sets;
 import com.test.api.beans.SearchResponse;
 import org.apache.commons.cli.CommandLine;
 
-import java.util.Collection;
-
 import static com.test.cli.enums.ParameterName.*;
 
 public class SearchCommand extends BaseCommand {
@@ -13,7 +11,6 @@ public class SearchCommand extends BaseCommand {
     private final String keywords;
     private final int offset;
     private final int limit;
-    private Collection<?> requiredParameters = Sets.newHashSet(KEYWORDS.name().toLowerCase());
 
     public SearchCommand(CommandLine cmd) {
         super(cmd);
@@ -25,11 +22,11 @@ public class SearchCommand extends BaseCommand {
 
     @Override
     protected void validate(CommandLine cmd) {
-        validateParams(cmd, requiredParameters);
+        validateParams(cmd, Sets.newHashSet(KEYWORDS.name().toLowerCase()));
     }
 
     @Override
-    public void execute() {
+    public void executeInternal() {
         SearchResponse searchResult = getTestAppClient().search(keywords, offset, limit);
 
         System.out.println("Overall items found: " + searchResult.getCount());

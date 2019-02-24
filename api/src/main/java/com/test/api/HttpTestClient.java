@@ -45,7 +45,7 @@ public class HttpTestClient implements TestClient {
                 .execute()
                 .get();
 
-            return objectMapper.readValue(response.getResponseBodyAsStream(), DocumentDto.class);
+            return objectMapper.readValue(response.getResponseBodyAsBytes(), DocumentDto.class);
         } catch (InterruptedException | ExecutionException | IOException e) {
             throw new RuntimeException("Failed to load document by id: " + id, e);
         }
@@ -99,7 +99,7 @@ public class HttpTestClient implements TestClient {
                 .execute()
                 .get();
 
-            return objectMapper.readValue(response.getResponseBodyAsStream(), SearchResponse.class);
+            return objectMapper.readValue(response.getResponseBodyAsBytes(), SearchResponse.class);
         } catch (InterruptedException | ExecutionException | IOException e) {
             throw new RuntimeException("Failed to perform search for the following criteria: " + searchCriteria, e);
         }
