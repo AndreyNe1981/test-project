@@ -1,19 +1,16 @@
 package com.test.api;
 
-import com.ning.http.client.AsyncHttpClient;
+import com.test.api.beans.DocumentDto;
+import com.test.api.beans.SearchCriteria;
+import com.test.api.beans.SearchResponse;
 
 import java.io.Closeable;
 
-public class TestClient implements Closeable {
+public interface TestClient extends Closeable {
 
-    private final AsyncHttpClient httpClient;
+    DocumentDto getDocumentById(String id);
 
-    public TestClient(AsyncHttpClient httpClient) {
-        this.httpClient = httpClient;
-    }
+    void putDocument(DocumentDto document);
 
-    @Override
-    public void close() {
-        httpClient.close();
-    }
+    SearchResponse search(String keywords, int offset, int limit);
 }

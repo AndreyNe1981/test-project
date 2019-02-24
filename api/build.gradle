@@ -11,6 +11,8 @@ compileJava.options.encoding = 'UTF-8'
 
 dependencies {
 	implementation group: 'com.ning', name: 'async-http-client', version: '1.9.40'
+
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.8'
 }
 
 idea {

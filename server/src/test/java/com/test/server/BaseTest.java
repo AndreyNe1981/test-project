@@ -2,14 +2,17 @@ package com.test.server;
 
 import com.ning.http.client.AsyncHttpClient;
 import com.ning.http.client.AsyncHttpClientConfig;
+import com.test.api.HttpTestClient;
 import com.test.api.TestClient;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.io.IOException;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(
@@ -24,8 +27,8 @@ public abstract class BaseTest {
 
     protected TestClient testClient;
 
-    @BeforeClass
-    protected void beforeClass() {
+    @Before
+    public void before() {
         final AsyncHttpClientConfig asyncHttpClientConfig = new AsyncHttpClientConfig.Builder()
             .setRequestTimeout(5000)
             .setReadTimeout(5000)
@@ -34,11 +37,11 @@ public abstract class BaseTest {
 
         AsyncHttpClient httpClient = new AsyncHttpClient(asyncHttpClientConfig);
 
-        testClient = new TestClient(httpClient);
+        testClient = new HttpTestClient(httpClient, "http://localhost:" + localServerPort);
     }
 
-    @AfterClass
-    protected void afterClass() {
+    @After
+    public void after() throws IOException {
         testClient.close();
     }
 }
