@@ -1,0 +1,49 @@
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'org.springframework.boot'
+
+sourceCompatibility = JavaVersion.VERSION_11
+compileJava.options.encoding = 'UTF-8'
+
+buildscript {
+    repositories {
+        mavenCentral()
+        jcenter()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${spring_boot_version}")
+    }
+}
+
+dependencies {
+    compile project(':api')
+
+    compile libs.guava
+    compile libs.logging
+
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: springBootVersion
+
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+springBoot {
+    mainClassName = "com.test.server.ServerApp"
+}
+
+jar {
+    enabled = true
+}
+
+bootJar {
+    classifier = "${spring_boot_classifier}"
+}
+
+idea {
+    module {
+        name = 'server'
+    }
+}

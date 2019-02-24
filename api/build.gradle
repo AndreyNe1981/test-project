@@ -1,0 +1,20 @@
+plugins {
+    id 'java'
+    id 'idea'
+}
+
+version "${version}"
+
+sourceCompatibility = 1.8
+compileJava.options.encoding = 'UTF-8'
+
+
+dependencies {
+	implementation group: 'com.ning', name: 'async-http-client', version: '1.9.40'
+}
+
+idea {
+    module {
+        name = 'api'
+    }
+}

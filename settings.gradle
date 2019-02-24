@@ -1,0 +1,6 @@
+rootProject.name = 'Test Project'
+
+include 'cli'
+include 'api'
+include 'server'
+
